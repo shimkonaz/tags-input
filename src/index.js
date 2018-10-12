@@ -1,23 +1,39 @@
 'use strict';
 
-const $tagsInput = document.getElementById('tags-input');
-const $tagsList = document.getElementById('tags-list');
-const tagsArr = ['1', 'super tag'];
+const $simpleTagsInput = document.getElementById('simple-tags-input');
+const $defaultTagsInput = document.getElementById('default-tags-input');
+const $simpleTagsList = document.getElementById('simple-tags-list');
+const $defaultTagsList = document.getElementById('default-tags-list');
+const simpleTagsArr = [];
+const defaultTagsArr = ['1', 'super tag'];
 
-$tagsInput.addEventListener('keyup', ({key, target}) => {
+$simpleTagsInput.addEventListener('keyup', ({key, target}) => {
   if (key === 'Enter' && target.value.trim()) {
     const $el = createTagElement(target.value);
     const isElementExist = tagsArr.includes(target.value);
 
     if (!isElementExist) {
-      $tagsList.appendChild($el);
+      $simpleTagsList.appendChild($el);
       tagsArr.push(target.value);
       target.value = '';
     }
   }
 });
 
-$tagsList.addEventListener('click', event => {
+$defaultTagsInput.addEventListener('keyup', ({key, target}) => {
+  if (key === 'Enter' && target.value.trim()) {
+    const $el = createTagElement(target.value);
+    const isElementExist = defaultTagsArr.includes(target.value);
+
+    if (!isElementExist) {
+      $defaultTagsList.appendChild($el);
+      defaultTagsArr.push(target.value);
+      target.value = '';
+    }
+  }
+});
+
+$defaultTagsList.addEventListener('click', event => {
   const {target} = event;
   const isRemoveBtn = target.classList.contains('remove-btn');
   const $foo = target.parentElement.parentElement;
@@ -44,10 +60,10 @@ const createTagElement = content => {
 };
 
 const init = () => {
-  tagsArr.forEach(tagValue => {
+  defaultTagsArr.forEach(tagValue => {
     const $el = createTagElement(tagValue);
 
-    $tagsList.appendChild($el);
+    $defaultTagsList.appendChild($el);
   });
 };
 
