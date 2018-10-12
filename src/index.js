@@ -4,17 +4,19 @@ const $simpleTagsInput = document.getElementById('simple-tags-input');
 const $defaultTagsInput = document.getElementById('default-tags-input');
 const $simpleTagsList = document.getElementById('simple-tags-list');
 const $defaultTagsList = document.getElementById('default-tags-list');
+const $autoAddBtn = document.getElementById('auto-add-btn');
 const simpleTagsArr = [];
+const addTagsArr = ['shortOne', 'mediumRare', 'hardly toooo looong yeeeeeeeeeeeeeeaaaaaaah'];
 const defaultTagsArr = ['1', 'super tag'];
 
 $simpleTagsInput.addEventListener('keyup', ({key, target}) => {
   if (key === 'Enter' && target.value.trim()) {
     const $el = createTagElement(target.value);
-    const isElementExist = tagsArr.includes(target.value);
+    const isElementExist = simpleTagsArr.includes(target.value);
 
     if (!isElementExist) {
       $simpleTagsList.appendChild($el);
-      tagsArr.push(target.value);
+      simpleTagsArr.push(target.value);
       target.value = '';
     }
   }
@@ -32,6 +34,19 @@ $defaultTagsInput.addEventListener('keyup', ({key, target}) => {
     }
   }
 });
+ 
+$simpleTagsList.addEventListener('click', event => {
+  const {target} = event;
+  const isRemoveBtn = target.classList.contains('remove-btn');
+  const $foo = target.parentElement.parentElement;
+  const $tag = target.parentElement;
+
+  if (isRemoveBtn) {
+    $foo.removeChild($tag);
+    const $rmIndex = simpleTagsArr.indexOf(target.value);
+    simpleTagsArr.splice(rmIndex, 1);
+  }
+});
 
 $defaultTagsList.addEventListener('click', event => {
   const {target} = event;
@@ -41,11 +56,18 @@ $defaultTagsList.addEventListener('click', event => {
 
   if (isRemoveBtn) {
     $foo.removeChild($tag);
-
-    // TODO: remove element from array
-    // tagsArr.splice();
+    const $rmIndex = defaultTagsArr.indexOf(target.value);
+    defaultTagsArr.splice(rmIndex, 1);
   }
 });
+
+$autoAddBtn.addEventListener('click', event => {
+  addTagsArr.forEach(tagValue => {
+    const $el = createTagElement(tagValue);
+
+    $defaultTagsList.appendChild($el);
+  });
+})
 
 const createTagElement = content => {
   const $li = document.createElement('li');
